@@ -9,35 +9,35 @@ import java.util.List;
 
 @Component
 public class QuestionService {
-    private QuestionRepository questionRepository;
+    private QuestionRepository repository;
 
-    public QuestionService(QuestionRepository questionRepository) {
-        this.questionRepository = questionRepository;
+    public QuestionService(QuestionRepository repository) {
+        this.repository = repository;
     }
 
     public Question getQuestion(Long id) {
-        return questionRepository.getOne(id);
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Question not found"));
     }
 
     public List<Question> getAll() {
-        return questionRepository.findAll();
+        return repository.findAll();
     }
 
     public Question createQuestion(QuestionDTO questionDTO) {
         Question newQuestion = new Question();
         newQuestion.setQuestion(questionDTO.getQuestion());
 
-        return questionRepository.save(newQuestion);
+        return repository.save(newQuestion);
     }
 
     public Question update(Long id, QuestionDTO questionDTO) {
-        Question question = questionRepository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find question with id " + id));
+        Question question = repository.findById(id).orElseThrow(() -> new RuntimeException("Couldn't find question with id " + id));
         question.setQuestion(questionDTO.getQuestion());
 
-        return questionRepository.save(question);
+        return repository.save(question);
     }
 
     public void delete(Long id) {
-        questionRepository.deleteById(id);
+        repository.deleteById(id);
     }
 }

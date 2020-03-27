@@ -1,7 +1,6 @@
 package com.bonder.controller;
 
 import com.bonder.domain.Question;
-import com.bonder.domain.User;
 import com.bonder.dto.QuestionDTO;
 import com.bonder.resource.QuestionAssembler;
 import com.bonder.service.QuestionService;
@@ -22,16 +21,16 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class QuestionController {
 
     private final QuestionAssembler assembler;
-    private final QuestionService questionService;
+    private final QuestionService service;
 
-    public QuestionController(QuestionAssembler assembler, QuestionService questionService) {
+    public QuestionController(QuestionAssembler assembler, QuestionService service) {
         this.assembler = assembler;
-        this.questionService = questionService;
+        this.service = service;
     }
 
     @GetMapping
     public CollectionModel<EntityModel<Question>> getQuestions() {
-        List<EntityModel<Question>> questions = questionService.getAll().stream()
+        List<EntityModel<Question>> questions = service.getAll().stream()
                 .map(assembler::toModel)
                 .collect(Collectors.toList());
 
@@ -41,14 +40,14 @@ public class QuestionController {
 
     @GetMapping("/{id}")
     public EntityModel<Question> getQuestion(@PathVariable Long id) {
-        Question question = questionService.getQuestion(id);
+        Question question = service.getQuestion(id);
 
         return assembler.toModel(question);
     }
 
     @PostMapping
     public ResponseEntity<EntityModel<Question>> createQuestion(@RequestBody QuestionDTO questionDTO) {
-        Question question = questionService.createQuestion(questionDTO);
+        Question question = service.createQuestion(questionDTO);
 
         return ResponseEntity
                 .created(linkTo(methodOn(QuestionController.class).getQuestion(question.getId())).toUri())
@@ -57,7 +56,7 @@ public class QuestionController {
 
     @PutMapping("/{id}")
     public ResponseEntity<EntityModel<Question>> updateQuestion(@PathVariable Long id, @RequestBody QuestionDTO questionDTO) {
-        Question question = questionService.update(id, questionDTO);
+        Question question = service.update(id, questionDTO);
 
         return ResponseEntity
                 .created(linkTo(methodOn(QuestionController.class).getQuestion(id)).toUri())
@@ -66,7 +65,7 @@ public class QuestionController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteQuestion(@PathVariable Long id) {
-        questionService.delete(id);
+        service.delete(id);
 
         return new ResponseEntity<>(id, HttpStatus.OK);
     }

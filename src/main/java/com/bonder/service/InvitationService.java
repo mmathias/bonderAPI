@@ -16,7 +16,7 @@ public class InvitationService {
     }
 
     public Invitation getInvitation(Long id) {
-        return repository.getOne(id);
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Invitation not found"));
     }
 
     public List<Invitation> getInvitations() {

@@ -40,8 +40,8 @@ public class InvitationController {
 
     @GetMapping(path = "/{id}")
     public EntityModel<Invitation> getInvitation(@PathVariable Long id) {
-        Invitation customer = service.getInvitation(id);
+        Invitation invitation = service.getInvitation(id);
 
-        return assembler.toModel(customer);
+        return assembler.toModel(invitation);
     }
 }

@@ -4,23 +4,22 @@ import com.bonder.domain.Answer;
 import com.bonder.repository.AnswerRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.BitSet;
 import java.util.List;
 
 @Component
 public class AnswerService {
 
-    private AnswerRepository answerRepository;
+    private AnswerRepository repository;
 
-    public AnswerService(AnswerRepository answerRepository) {
-        this.answerRepository = answerRepository;
+    public AnswerService(AnswerRepository repository) {
+        this.repository = repository;
     }
 
     public List<Answer> getAnswers() {
-        return answerRepository.findAll();
+        return repository.findAll();
     }
 
     public Answer getAnswer(Long id) {
-        return answerRepository.getOne(id);
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Answer not found"));
     }
 }

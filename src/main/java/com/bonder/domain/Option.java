@@ -3,8 +3,6 @@ package com.bonder.domain;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @Entity
 @Data
@@ -13,9 +11,8 @@ public class Option {
 
     private @Id @GeneratedValue Long id;
 
-    private String option;
+    private String description;
 
     @ManyToOne
     private Question question;
-
 }

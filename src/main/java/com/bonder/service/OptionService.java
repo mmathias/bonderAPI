@@ -9,17 +9,17 @@ import java.util.List;
 @Component
 public class OptionService {
 
-    private OptionRepository optionRepository;
+    private OptionRepository repository;
 
-    public OptionService(OptionRepository optionRepository) {
-        this.optionRepository = optionRepository;
+    public OptionService(OptionRepository repository) {
+        this.repository = repository;
     }
 
     public List<Option> getOptions() {
-        return optionRepository.findAll();
+        return repository.findAll();
     }
 
     public Option getOption(Long id) {
-        return optionRepository.getOne(id);
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
     }
 }

@@ -19,6 +19,6 @@ public class EventService {
     }
 
     public Event getEvent(Long id) {
-        return repository.getOne(id);
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Event not found"));
     }
 }
