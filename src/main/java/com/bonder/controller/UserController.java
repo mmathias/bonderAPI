@@ -6,6 +6,7 @@ import com.bonder.resource.UserAssembler;
 import com.bonder.service.UserService;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,9 +31,16 @@ public class UserController {
 
     @GetMapping("/{id}")
     public EntityModel<User> getUser(@PathVariable Long id) {
-        User user = service.get(id);
+        User user = service.getUser(id);
 
         return assembler.toModel(user);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable Long id) {
+        service.deleteUser(id);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping

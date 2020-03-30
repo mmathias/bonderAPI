@@ -13,12 +13,11 @@ public class UserService {
 
     private UserRepository repository;
 
-    public UserService(
-            UserRepository repository) {
+    public UserService(UserRepository repository) {
         this.repository = repository;
     }
 
-    public User get(Long id) {
+    public User getUser(Long id) {
         return repository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
@@ -28,16 +27,26 @@ public class UserService {
 
     public User createUser(UserDTO userDTO) {
         User newUser = new User();
-        newUser.setEmail(userDTO.getEmail());
+        setUserProperties(newUser, userDTO);
         newUser.setJoinDate(LocalDate.now());
-        newUser.setName(userDTO.getName());
-        newUser.setPassword(userDTO.getPassword());
 
         return repository.save(newUser);
     }
 
     public User update(Long id, UserDTO userDTO) {
-        //TODO
-        return null;
+        User userToUpdate = getUser(id);
+        setUserProperties(userToUpdate, userDTO);
+
+        return repository.save(userToUpdate);
+    }
+
+    private void setUserProperties(User user, UserDTO userDTO) {
+        user.setEmail(userDTO.getEmail());
+        user.setName(userDTO.getName());
+        user.setPassword(userDTO.getPassword());
+    }
+
+    public void deleteUser(Long id) {
+        repository.deleteById(id);
     }
 }

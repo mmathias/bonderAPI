@@ -1,15 +1,14 @@
 package com.bonder.controller;
 
 import com.bonder.domain.Event;
+import com.bonder.dto.EventDTO;
 import com.bonder.resource.EventAssembler;
 import com.bonder.service.EventService;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,6 +40,13 @@ public class EventController {
     @GetMapping(path = "/{id}")
     public EntityModel<Event> getEvent(@PathVariable Long id) {
         Event event = service.getEvent(id);
+
+        return assembler.toModel(event);
+    }
+
+    @PostMapping
+    public EntityModel<Event> createEvent(@Valid @RequestBody EventDTO eventDTO) {
+        Event event = service.createEvent(eventDTO);
 
         return assembler.toModel(event);
     }

@@ -1,15 +1,14 @@
 package com.bonder.controller;
 
 import com.bonder.domain.Invitation;
+import com.bonder.dto.InvitationDTO;
 import com.bonder.resource.InvitationAssembler;
 import com.bonder.service.InvitationService;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,6 +40,13 @@ public class InvitationController {
     @GetMapping(path = "/{id}")
     public EntityModel<Invitation> getInvitation(@PathVariable Long id) {
         Invitation invitation = service.getInvitation(id);
+
+        return assembler.toModel(invitation);
+    }
+
+    @PostMapping
+    public EntityModel<Invitation> createInvitation(@Valid @RequestBody InvitationDTO invitationDTO) {
+        Invitation invitation = service.createInvitation(invitationDTO);
 
         return assembler.toModel(invitation);
     }
